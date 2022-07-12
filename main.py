@@ -37,3 +37,14 @@ class Transcriber:
 
 trans = Transcriber()
 translator = Translator()
+
+root = Tk()
+root.title("Transcription App")
+root.configure(bg="#495C83")
+
+
+
+
+
+
+root.mainloop()
