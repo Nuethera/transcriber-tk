@@ -50,6 +50,27 @@ d_2lang = "en-IN"
 fpath = None
 
 
+def transcribe_mic():
+    print(i_lang)
+    text = trans.start_rec(ln=i_lang)
+    src_text.config(text="Capturing audio for 10 secs...")
+    translation = translator.translate(text, dest=d_lang[:2], src=i_lang[:2])
+    src_text.config(text=text)
+    dest_text.config(text=translation.text)
+
+
+def transcribe_audio():
+    print(i_lang)
+    if fpath:
+        text = trans.audio_transcribe(path=fpath, ln=i_2lang)
+        src_text.config(text="Capturing audio for 10 secs...")
+        translation = translator.translate(text, dest=d_2lang[:2], src=i_2lang[:2])
+        src_text.config(text=text)
+        dest_text.config(text=translation.text)
+    else:
+        src_text.config(text="Please provide an audio file path")
+
+
 def ilCB(s):
     global i_lang
     i_lang = languages[s]
@@ -79,6 +100,7 @@ def open_file():
     file_path = askopenfile(mode='r', filetypes=[('mp3 audio', '*.mp4'),("wav audio","*.wav")])
     if file_path is not None:
         fpath = file_path.name
+        upload_label.config(text=fpath.split('/')[-1])
 
 
 # heading
@@ -173,12 +195,12 @@ output_lang2.configure(bg="#C8B6E2")
 output_lang2.grid(row=8, column=6)
 
 # Output button
-final_btn1 = Button(root,  text="Mic Capturing", fg="#2E4053", bg="#7A86B6", padx=100)
+final_btn1 = Button(root, command=transcribe_mic, text="Mic Capturing", fg="#2E4053", bg="#7A86B6", padx=100)
 final_btn1.configure(font=("elephant", 12))
 final_btn1.grid(row=8, column=0, columnspan=3)
 
 # Output button aud-file
-final_btn = Button(root, text="Audio-file Capturing", fg="#2E4053", bg="#7A86B6", padx=100)
+final_btn = Button(root, command=transcribe_audio, text="Audio-file Capturing", fg="#2E4053", bg="#7A86B6", padx=100)
 final_btn.configure(font=("elephant", 12))
 final_btn.grid(row=8, column=3, columnspan=3)
 #
